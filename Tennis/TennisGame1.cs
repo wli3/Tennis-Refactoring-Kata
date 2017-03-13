@@ -4,38 +4,37 @@ namespace Tennis
 {
 	class TennisGame1 : ITennisGame
 	{
-		private int m_score1 = 0;
-		private int m_score2 = 0;
+		private int _score1 = 0;
+		private int _score2 = 0;
 
 		public void WonPoint(TennisPlayer tennisPlayer)
 		{
 			if (tennisPlayer == TennisPlayer.Player1)
-				m_score1 += 1;
+				_score1 += 1;
 			else
-				m_score2 += 1;
+				_score2 += 1;
 		}
 
 		public string GetScore()
 		{
 			string score = "";
-			var tempScore = 0;
-			if (m_score1 == m_score2) {
-				if (m_score1 < 3) {
-					score = ConvertScoreToString(m_score1) + "-" + "All";
+			if (_score1 == _score2) {
+				if (_score1 < 3) {
+					score = ConvertScoreToString(_score1) + "-" + "All";
 				}
 				else {
 					score = "Deuce";
 				}
 			}
-			else if (m_score1 >= 4 || m_score2 >= 4) {
-				var minusResult = m_score1 - m_score2;
+			else if (_score1 >= 4 || _score2 >= 4) {
+				var minusResult = _score1 - _score2;
 				if (minusResult == 1) score = "Advantage player1";
 				else if (minusResult == -1) score = "Advantage player2";
 				else if (minusResult >= 2) score = "Win for player1";
 				else score = "Win for player2";
 			}
 			else {
-				score = ConvertScoreToString(m_score1) + "-" + ConvertScoreToString(m_score2);
+				score = ConvertScoreToString(_score1) + "-" + ConvertScoreToString(_score2);
 			}
 			return score;
 		}
