@@ -18,10 +18,10 @@ namespace Tennis
 		{
 			return Either<string, GameState>.Right(_state)
 				.Chain(TennisScoringRules.GetScoreIfEqual)
-				.Chain(TennisScoringRules.GetIfDeuce)
-				.Chain(TennisScoringRules.GetNormalScore)
-				.Chain(TennisScoringRules.GetIfPlayer1AdvantageScore)
-				.Chain(TennisScoringRules.GetIfPlayer2AdvantageScore)
+				.Chain(TennisScoringRules.GetScoreIfDeuce)
+				.Chain(TennisScoringRules.GetScoreForNormalPlay)
+				.Chain(TennisScoringRules.GetScoreIfPlayer1Advantage)
+				.Chain(TennisScoringRules.GetScoreIfPlayer2Advantage)
 				.Chain(TennisScoringRules.GetScoreIfPlayer1Win)
 				.Chain(TennisScoringRules.GetScoreIfPlayer2Win)
 				.Left();

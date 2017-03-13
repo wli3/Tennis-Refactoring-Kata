@@ -14,7 +14,7 @@ namespace Tennis
 			return Either<string, GameState>.Right(state);
 		}
 
-		public static Either<string, GameState> GetIfDeuce(GameState state)
+		public static Either<string, GameState> GetScoreIfDeuce(GameState state)
 		{
 			if (state.Player1Score == state.Player2Score)
 			{
@@ -23,7 +23,7 @@ namespace Tennis
 			return Either<string, GameState>.Right(state);
 		}
 
-		public static Either<string, GameState> GetNormalScore(GameState state)
+		public static Either<string, GameState> GetScoreForNormalPlay(GameState state)
 		{
 			if (state.Player1Score < 4 && state.Player2Score < 4)
 			{
@@ -34,7 +34,7 @@ namespace Tennis
 			return Either<string, GameState>.Right(state);
 		}
 
-		public static Either<string, GameState> GetIfPlayer1AdvantageScore(GameState state)
+		public static Either<string, GameState> GetScoreIfPlayer1Advantage(GameState state)
 		{
 			var minusResult = state.Player1Score - state.Player2Score;
 			if (minusResult == 1)
@@ -44,7 +44,7 @@ namespace Tennis
 			return Either<string, GameState>.Right(state);
 		}
 
-		public static Either<string, GameState> GetIfPlayer2AdvantageScore(GameState state)
+		public static Either<string, GameState> GetScoreIfPlayer2Advantage(GameState state)
 		{
 			var minusResult = state.Player1Score - state.Player2Score;
 			if (minusResult == -1)
