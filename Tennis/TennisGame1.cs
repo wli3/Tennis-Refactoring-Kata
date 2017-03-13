@@ -16,9 +16,10 @@ namespace Tennis
 
 		public string GetScore()
 		{
-			if (_state.Player1Score == _state.Player2Score && _state.Player1Score < 3)
+			var result = GetScoreIfEqual(_state);
+			if (result.IsLeft())
 			{
-				return ConvertScoreToString(_state.Player1Score) + "-" + "All";
+				return result.Left();
 			}
 
 			if (_state.Player1Score == _state.Player2Score)
@@ -44,6 +45,16 @@ namespace Tennis
 				return "Win for player1";
 
 			return "Win for player2";
+		}
+
+		static private Either<string, GameState> GetScoreIfEqual(GameState state)
+		{
+			if (state.Player1Score == state.Player2Score && state.Player1Score < 3)
+			{
+				return Either<string, GameState>.Left(ConvertScoreToString(state.Player1Score) + "-" + "All");
+			}
+
+			return Either<string, GameState>.Right(state);
 		}
 
 		private static string ConvertScoreToString(int score)
