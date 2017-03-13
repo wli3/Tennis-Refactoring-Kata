@@ -49,6 +49,7 @@
     <Compile Include="ITennisGame.cs" />
     <Compile Include="TennisGame1.cs" />
     <Compile Include="TennisPlayer.cs" />
+    <Compile Include="TennisScoringRules.cs" />
     <Compile Include="TennisTests.cs" />
   </ItemGroup>
   <ItemGroup>
