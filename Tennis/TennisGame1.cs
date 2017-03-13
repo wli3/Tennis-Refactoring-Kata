@@ -17,26 +17,36 @@ namespace Tennis
 
 		public string GetScore()
 		{
-			string score = "";
-			if (_score1 == _score2) {
-				if (_score1 < 3) {
-					score = ConvertScoreToString(_score1) + "-" + "All";
-				}
-				else {
-					score = "Deuce";
-				}
+			if (_score1 == _score2 && _score1 < 3)
+			{
+				return ConvertScoreToString(_score1) + "-" + "All";
 			}
-			else if (_score1 >= 4 || _score2 >= 4) {
+			else if (_score1 == _score2)
+			{
+				return "Deuce";
+			}
+			else if (_score1 >= 4 || _score2 >= 4)
+			{
 				var minusResult = _score1 - _score2;
-				if (minusResult == 1) score = "Advantage player1";
-				else if (minusResult == -1) score = "Advantage player2";
-				else if (minusResult >= 2) score = "Win for player1";
-				else score = "Win for player2";
+				if (minusResult == 1)
+				{
+					return "Advantage player1";
+				}
+				else if (minusResult == -1)
+				{
+					return "Advantage player2";
+				}
+				else if (minusResult >= 2)
+					return "Win for player1";
+				else
+				{
+					return "Win for player2";
+				}
 			}
-			else {
-				score = ConvertScoreToString(_score1) + "-" + ConvertScoreToString(_score2);
+			else
+			{
+				return ConvertScoreToString(_score1) + "-" + ConvertScoreToString(_score2);
 			}
-			return score;
 		}
 
 		private static string ConvertScoreToString(int score)
