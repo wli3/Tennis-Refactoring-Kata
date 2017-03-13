@@ -18,15 +18,11 @@ namespace Tennis
 		{
 			var result = Either<string, GameState>.Right(_state)
 				.Chain(GetScoreIfEqual)
-				.Chain(GetIfDeuce);
+				.Chain(GetIfDeuce)
+				.Chain(GetNormalScore);
 			if (result.IsLeft())
 			{
 				return result.Left();
-			}
-
-			if (_state.Player1Score < 4 && _state.Player2Score < 4)
-			{
-				return ConvertScoreToString(_state.Player1Score) + "-" + ConvertScoreToString(_state.Player2Score);
 			}
 
 			var minusResult = _state.Player1Score - _state.Player2Score;
@@ -59,6 +55,17 @@ namespace Tennis
 			if (state.Player1Score == state.Player2Score)
 			{
 				return Either<string, GameState>.Left("Deuce");
+			}
+			return Either<string, GameState>.Right(state);
+		}
+
+		private static Either<string, GameState> GetNormalScore(GameState state)
+		{
+			if (state.Player1Score < 4 && state.Player2Score < 4)
+			{
+				return
+					Either<string, GameState>.Left(
+						ConvertScoreToString(state.Player1Score) + "-" + ConvertScoreToString(state.Player2Score));
 			}
 			return Either<string, GameState>.Right(state);
 		}
