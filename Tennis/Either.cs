@@ -2,13 +2,14 @@
 
 namespace Tennis
 {
-	internal interface IEither<out TL, out TR>
+	internal interface IEither<TL, out TR>
 	{
 		bool IsLeft();
 		bool IsRight();
 		TL Left();
 		TR Right();
 		IEither<TL, TO> Map<TO>(Func<TR, TO> mapFunc);
+		IEither<TL, TO> Chain<TO>(Func<TR, IEither<TL, TO>> chainFunc);
 	}
 
 	class Either<TL, TR> : IEither<TL, TR>
@@ -70,6 +71,13 @@ namespace Tennis
 			return IsLeft()
 				? Either<TL, TO>.Left(Left())
 				: Either<TL, TO>.Right(mapFunc(Right()));
+		}
+
+		public IEither<TL, TO> Chain<TO>(Func<TR, IEither<TL, TO>> chainFunc)
+		{
+			return IsLeft()
+				? Either<TL, TO>.Left(Left())
+				: chainFunc(Right());
 		}
 
 		public TR Right()
