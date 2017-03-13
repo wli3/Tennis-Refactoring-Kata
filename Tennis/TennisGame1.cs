@@ -16,31 +16,18 @@ namespace Tennis
 
 		public string GetScore()
 		{
-			var result = Either<string, GameState>.Right(_state)
+			return Either<string, GameState>.Right(_state)
 				.Chain(GetScoreIfEqual)
 				.Chain(GetIfDeuce)
-				.Chain(GetNormalScore);
-			if (result.IsLeft())
-			{
-				return result.Left();
-			}
-
-			var minusResult = _state.Player1Score - _state.Player2Score;
-			if (minusResult == 1)
-			{
-				return "Advantage player1";
-			}
-			if (minusResult == -1)
-			{
-				return "Advantage player2";
-			}
-			if (minusResult >= 2)
-				return "Win for player1";
-
-			return "Win for player2";
+				.Chain(GetNormalScore)
+				.Chain(GetIfPlayer1AdvantageScore)
+				.Chain(GetIfPlayer2AdvantageScore)
+				.Chain(GetScoreIfPlayer1Win)
+				.Chain(GetScoreIfPlayer2Win)
+				.Left();
 		}
 
-		static private Either<string, GameState> GetScoreIfEqual(GameState state)
+		public static Either<string, GameState> GetScoreIfEqual(GameState state)
 		{
 			if (state.Player1Score == state.Player2Score && state.Player1Score < 3)
 			{
@@ -50,7 +37,7 @@ namespace Tennis
 			return Either<string, GameState>.Right(state);
 		}
 
-		private static Either<string, GameState> GetIfDeuce(GameState state)
+		public static Either<string, GameState> GetIfDeuce(GameState state)
 		{
 			if (state.Player1Score == state.Player2Score)
 			{
@@ -59,13 +46,52 @@ namespace Tennis
 			return Either<string, GameState>.Right(state);
 		}
 
-		private static Either<string, GameState> GetNormalScore(GameState state)
+		public static Either<string, GameState> GetNormalScore(GameState state)
 		{
 			if (state.Player1Score < 4 && state.Player2Score < 4)
 			{
 				return
 					Either<string, GameState>.Left(
 						ConvertScoreToString(state.Player1Score) + "-" + ConvertScoreToString(state.Player2Score));
+			}
+			return Either<string, GameState>.Right(state);
+		}
+
+		public static Either<string, GameState> GetIfPlayer1AdvantageScore(GameState state)
+		{
+			var minusResult = state.Player1Score - state.Player2Score;
+			if (minusResult == 1)
+			{
+				return Either<string, GameState>.Left("Advantage player1");
+			}
+			return Either<string, GameState>.Right(state);
+		}
+
+		public static Either<string, GameState> GetIfPlayer2AdvantageScore(GameState state)
+		{
+			var minusResult = state.Player1Score - state.Player2Score;
+			if (minusResult == -1)
+			{
+				return Either<string, GameState>.Left("Advantage player2");
+			}
+			return Either<string, GameState>.Right(state);
+		}
+
+		public static Either<string, GameState> GetScoreIfPlayer1Win(GameState state)
+		{
+			var minusResult = state.Player1Score - state.Player2Score;
+			if (minusResult >= 2)
+			{
+				return Either<string, GameState>.Left("Win for player1");
+			}
+			return Either<string, GameState>.Right(state);
+		}
+
+		public static Either<string, GameState> GetScoreIfPlayer2Win(GameState state)
+		{
+			var minusResult = state.Player1Score - state.Player2Score;
+			if (minusResult <= -2) {
+				return Either<string, GameState>.Left("Win for player2");
 			}
 			return Either<string, GameState>.Right(state);
 		}
