@@ -4,35 +4,34 @@ namespace Tennis
 {
 	class TennisGame1 : ITennisGame
 	{
-		private int _score1 = 0;
-		private int _score2 = 0;
+		private GameState _state = GameState.GetInstance(0, 0);
 
 		public void WonPoint(TennisPlayer tennisPlayer)
 		{
 			if (tennisPlayer == TennisPlayer.Player1)
-				_score1 += 1;
+				_state.Player1Score += 1;
 			else
-				_score2 += 1;
+				_state.Player2Score += 1;
 		}
 
 		public string GetScore()
 		{
-			if (_score1 == _score2 && _score1 < 3)
+			if (_state.Player1Score == _state.Player2Score && _state.Player1Score < 3)
 			{
-				return ConvertScoreToString(_score1) + "-" + "All";
+				return ConvertScoreToString(_state.Player1Score) + "-" + "All";
 			}
 
-			if (_score1 == _score2)
+			if (_state.Player1Score == _state.Player2Score)
 			{
 				return "Deuce";
 			}
 
-			if (_score1 < 4 && _score2 < 4)
+			if (_state.Player1Score < 4 && _state.Player2Score < 4)
 			{
-				return ConvertScoreToString(_score1) + "-" + ConvertScoreToString(_score2);
+				return ConvertScoreToString(_state.Player1Score) + "-" + ConvertScoreToString(_state.Player2Score);
 			}
 
-			var minusResult = _score1 - _score2;
+			var minusResult = _state.Player1Score - _state.Player2Score;
 			if (minusResult == 1)
 			{
 				return "Advantage player1";
