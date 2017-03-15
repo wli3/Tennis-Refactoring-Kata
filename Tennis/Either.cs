@@ -2,29 +2,29 @@
 
 namespace Tennis
 {
-	internal interface IEither<TL, out TR>
+	internal interface IOldEither<TL, out TR>
 	{
 		bool IsLeft();
 		bool IsRight();
 		TL Left();
 		TR Right();
-		IEither<TL, TO> Map<TO>(Func<TR, TO> mapFunc);
-		IEither<TL, TO> Chain<TO>(Func<TR, IEither<TL, TO>> chainFunc);
+		IOldEither<TL, TO> Map<TO>(Func<TR, TO> mapFunc);
+		IOldEither<TL, TO> Chain<TO>(Func<TR, IOldEither<TL, TO>> chainFunc);
 	}
 
-	class Either<TL, TR> : IEither<TL, TR>
+	class OldEither<TL, TR> : IOldEither<TL, TR>
 	{
-		static public Either<TL, TR> Left(TL left)
+		static public OldEither<TL, TR> Left(TL left)
 		{
-			return new Either<TL, TR>(left);
+			return new OldEither<TL, TR>(left);
 		}
 
-		static public Either<TL, TR> Right(TR right)
+		static public OldEither<TL, TR> Right(TR right)
 		{
-			return new Either<TL, TR>(right);
+			return new OldEither<TL, TR>(right);
 		}
 
-		private Either(TL left)
+		private OldEither(TL left)
 		{
 			if (left == null)
 				throw new ArgumentNullException(nameof(left));
@@ -34,7 +34,7 @@ namespace Tennis
 			_isLeft = true;
 		}
 
-		private Either(TR right)
+		private OldEither(TR right)
 		{
 			if (right == null)
 				throw new ArgumentNullException(nameof(right));
@@ -66,17 +66,17 @@ namespace Tennis
 			return _left;
 		}
 
-		public IEither<TL, TO> Map<TO>(Func<TR, TO> mapFunc)
+		public IOldEither<TL, TO> Map<TO>(Func<TR, TO> mapFunc)
 		{
 			return IsLeft()
-				? Either<TL, TO>.Left(Left())
-				: Either<TL, TO>.Right(mapFunc(Right()));
+				? OldEither<TL, TO>.Left(Left())
+				: OldEither<TL, TO>.Right(mapFunc(Right()));
 		}
 
-		public IEither<TL, TO> Chain<TO>(Func<TR, IEither<TL, TO>> chainFunc)
+		public IOldEither<TL, TO> Chain<TO>(Func<TR, IOldEither<TL, TO>> chainFunc)
 		{
 			return IsLeft()
-				? Either<TL, TO>.Left(Left())
+				? OldEither<TL, TO>.Left(Left())
 				: chainFunc(Right());
 		}
 

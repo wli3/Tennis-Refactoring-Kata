@@ -16,7 +16,7 @@ namespace Tennis
 
 		public string GetScore()
 		{
-			return Either<string, GameState>.Right(_state)
+			return OldEither<string, GameState>.Right(_state)
 				.Chain(TennisScoringRules.GetScoreIfEqual)
 				.Chain(TennisScoringRules.GetScoreIfDeuce)
 				.Chain(TennisScoringRules.GetScoreForNormalPlay)
